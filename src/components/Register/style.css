@@ -1,0 +1,94 @@
+.__register {
+      width          : 100vw;
+      height         : 100vh;
+      display        : flex;
+      justify-content: center;
+      align-items    : center;
+}
+
+.__register__form {
+      width             : 20%;
+      height            : 40%;
+      display           : flex;
+      flex-direction    : column;
+      align-items       : center;
+      justify-content   : center;
+      gap               : 1.2rem;
+      box-shadow        : 1px 2px 37px -1px rgba(0, 0, 0, 0.69);
+      -webkit-box-shadow: 1px 2px 37px -1px rgba(0, 0, 0, 0.69);
+      -moz-box-shadow   : 1px 2px 37px -1px rgba(0, 0, 0, 0.69);
+}
+
+.__register__form>p {
+      font-size: 2.5rem;
+}
+
+.__register__form>a {
+      text-decoration: none;
+      color          : black;
+      cursor         : pointer;
+}
+
+.__register__form>span {
+      width          : 50%;
+      display        : flex;
+      justify-content: center;
+      align-items    : center;
+      gap            : 5px;
+}
+
+.__register__form>span>input {
+      padding: .4rem 1rem;
+}
+
+.loginBtn,
+.signUpBtn {
+      border          : none;
+      background-color: tomato;
+      color           : white;
+      font            : 300 0.9vmax;
+      width           : 50%;
+      padding         : 0.8vmax;
+      cursor          : pointer;
+      transition      : all 0.5s;
+      border-radius   : 4px;
+      outline         : none;
+      box-shadow      : 0 2px 5px rgba(0, 0, 0, 0.219);
+}
+
+.loginBtn:hover,
+.signUpBtn:hover {
+      background-color: rgb(179, 66, 46);
+}
+
+#registerImage {
+      text-align: center;
+}
+
+#registerImage>img {
+      width        : 3vmax;
+      border-radius: 100%;
+}
+
+#registerImage>input {
+      display: flex;
+      padding: 0%;
+}
+
+#registerImage>input::file-selector-button {
+      cursor          : pointer;
+      width           : 100%;
+      z-index         : 2;
+      height          : 5vh;
+      border          : none;
+      margin          : 0%;
+      font            : 400 0.8vmax;
+      transition      : all 0.5s;
+      padding         : 0 1vmax;
+      color           : rgba(0, 0, 0, 0.623);
+      background-color: rgb(255, 255, 255);
+}
+
+#registerImage>input::file-selector-button:hover {
+      background-color: rgb(235, 235, 235);
+}
