@@ -1,14 +1,22 @@
 const mongoose = require("mongoose");
 
-const productSchema = new mongoose.Schema({
+const carSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, "Please enter product name"],
+        required: [true, "Please enter car name"],
         trim: true
+    },
+    model: {
+        type: String,
+        required: [true, "Please enter car model"]
+    },
+    year: {
+        type: Number,
+        required: [true, "Please enter model year"]
     },
     description: {
         type: String,
-        required: [true, "Please enter product description"]
+        required: [true, "Please enter car description"]
     },
     price: {
         type: Number,
@@ -31,15 +39,6 @@ const productSchema = new mongoose.Schema({
             }
         }
     ],
-    category: {
-        type: String,
-        required: [true, "Please enter category"]
-    },
-    stock: {
-        type: Number,
-        required: [true, "Please enter stock"],
-        maxLength: [4, "Stock cannot exceed 4 characters"]
-    },
     numOfReviews: {
         type: Number,
         default: 0
@@ -72,4 +71,4 @@ const productSchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model("Product", productSchema); 
+module.exports = mongoose.model("Car", carSchema); 

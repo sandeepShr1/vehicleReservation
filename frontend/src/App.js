@@ -3,20 +3,23 @@ import Layout from "./components/Layout/Layout";
 import Home from "./pages/Home/index";
 import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
-import Dashboard from "./components/Dashboard/Dashboard.js";
+import Dashboard from "./pages/Admin/Dashboard/Dashboard";
 import Profile from "./components/Users/Profile"
 import PageNotFound from "./components/PageNotFound/PageNotFound"
 import Unauthorized from "./components/Unauthorized/Unauthorized"
 import RequiredAuth from "./components/RequiredAuth";
 import { connect } from "react-redux";
 import { useEffect } from "react";
-import { fetchMe } from "./redux/auth/authSlice";
-import "./style.css";
+import { loadUser } from "./redux/actions/userActions";
+import Cars from "./pages/Admin/Car/Cars";
+import AddCar from "./pages/Admin/Car/AddCar";
+import Admin from "./pages/Admin/Admin";
+import "./App.css"
 
 
-function App({ fetchMe, loading, isAuth, user, error }) {
+function App({ loadUser, loading, isAuthenticated, user, error }) {
   useEffect(() => {
-    fetchMe();
+    loadUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
 
   }, []);
@@ -27,19 +30,24 @@ function App({ fetchMe, loading, isAuth, user, error }) {
   return (
     <>
       <Routes>
+        {/* Public Routes */}
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
+        <Route path="/" element={<Home />} />
         <Route path="/" element={<Layout />}>
-          {/* Public Routes */}
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
-          <Route path="/" element={<Home />} />
 
           {/* Users Routes */}
-          <Route element={<RequiredAuth isAuth={isAuth} user={user} role="user" />}>
+          <Route element={<RequiredAuth isAuthenticated={isAuthenticated} user={user} role="user" />}>
             <Route path="profile" element={<Profile />} />
           </Route>
           {/* admin Routes */}
-          <Route element={<RequiredAuth isAuth={isAuth} user={user} role="admin" />}>
-            <Route path="dashboard" element={<Dashboard />} />
+          <Route element={<RequiredAuth isAuthenticated={isAuthenticated} user={user} role="admin" />}>
+            <Route path="admin" element={<Admin />} >
+              <Route index element={<Dashboard />} />
+              <Route path="cars" element={<Cars />} />
+              <Route path="car/add" element={<AddCar />} />
+            </Route>
+
           </Route>
 
           {/* not found pages */}
@@ -53,13 +61,14 @@ function App({ fetchMe, loading, isAuth, user, error }) {
 }
 
 const mapStateToProps = ({
-  authState: { user: { loading, isAuth, user, error } },
+  userState: { loading, isAuthenticated, user, error }
+
 }) => ({
-  loading, isAuth, user, error
+  loading, isAuthenticated, user, error
 });
 
 const mapDispatchToProps = {
-  fetchMe
+  loadUser
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

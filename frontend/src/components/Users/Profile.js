@@ -1,23 +1,24 @@
 import React from 'react'
 import { connect } from 'react-redux';
-import { logout } from '../../redux/auth/authSlice';
+import { logout } from "../../redux/actions/userActions"
 
-const Profile = ({ logout, loading, isAuth, error }) => {
+const Profile = ({ logout, loading, isAuthenticated, error }) => {
       if (loading) {
             return <></>
       }
       return (
             <div>
 
-                  {isAuth ? <button onClick={logout}>Logout</button> : ""}
+                  {isAuthenticated ? <button onClick={logout}>Logout</button> : ""}
             </div>
       )
 }
 
 const mapStateToProps = ({
-      authState: { user: { loading, isAuth, error } },
+      userState: { loading, isAuthenticated, error }
+
 }) => ({
-      loading, isAuth, error
+      loading, isAuthenticated, error
 });
 
 const mapDispatchToProps = {

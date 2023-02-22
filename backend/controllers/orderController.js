@@ -1,5 +1,5 @@
 const Order = require("../model/orderModel");
-const Product = require("../model/productModel");
+const Car = require("../model/carModel");
 const ErrorHandler = require("../utils/errorHandler")
 const catchAsyncError = require("../middleware/catchAsyncErrors");
 
@@ -80,7 +80,7 @@ exports.updateOrder = catchAsyncError(async (req, res, next) => {
       const order = await Order.findById(req.params.id);
 
       if (!order) {
-            return next(new ErrorHandler("Product not found!", 404));
+            return next(new ErrorHandler("Car not found!", 404));
       }
 
       if (order.orderStatus === "Delivered") {
@@ -90,7 +90,7 @@ exports.updateOrder = catchAsyncError(async (req, res, next) => {
 
       if (req.body.status === "Shipped") {
             order.orderItems.forEach(async (o) => {
-                  await updateStock(o.product, o.quantity);
+                  await updateStock(o.car, o.quantity);
             });
 
       }
@@ -108,11 +108,11 @@ exports.updateOrder = catchAsyncError(async (req, res, next) => {
 });
 
 async function updateStock(id, quantity) {
-      const product = await Product.findById(id);
+      const car = await Car.findById(id);
 
-      product.stock -= quantity;
+      car.stock -= quantity;
 
-      await product.save({ validateBeforeSave: false });
+      await car.save({ validateBeforeSave: false });
 }
 
 // delete Orders admin
@@ -120,7 +120,7 @@ exports.deleteOrder = catchAsyncError(async (req, res, next) => {
       const order = await Order.findById(req.params.id);
 
       if (!order) {
-            return next(new ErrorHandler("Product not found!", 404));
+            return next(new ErrorHandler("Car not found!", 404));
       }
       await order.remove();
       res.status(200).json({

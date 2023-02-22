@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { connect } from 'react-redux';
-import { register } from '../../redux/auth/authSlice';
+import { register } from "../../redux/actions/userActions"
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import "./style.css";
 import profileDefault from "../../assets/profile.jpg";
 import { MdDriveFileRenameOutline, MdLock, MdOutlineMail } from "react-icons/md"
 
-const Register = ({ register, loading, isAuth, error }) => {
+const Register = ({ register, loading, isAuthenticated, error }) => {
 
       const [registerData, setRegisterData] = useState({
             name: "",
@@ -55,10 +55,10 @@ const Register = ({ register, loading, isAuth, error }) => {
             // if (error) {
             //       alert(error);
             // }
-            if (isAuth) {
+            if (isAuthenticated) {
                   history(from, { replace: true });
             }
-      }, [error, isAuth])
+      }, [error, isAuthenticated])
       if (loading) {
             return <>loading</>
       }
@@ -121,9 +121,10 @@ const Register = ({ register, loading, isAuth, error }) => {
       )
 }
 const mapStateToProps = ({
-      authState: { user: { loading, isAuth, error } },
+      userState: { loading, isAuthenticated, error }
+
 }) => ({
-      loading, isAuth, error
+      loading, isAuthenticated, error
 });
 
 const mapDispatchToProps = {

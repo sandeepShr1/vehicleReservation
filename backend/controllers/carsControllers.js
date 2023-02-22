@@ -1,11 +1,11 @@
-const Product = require("../model/productModel");
+const Car = require("../model/carModel");
 const ErrorHandler = require("../utils/errorHandler")
 const catchAsyncError = require("../middleware/catchAsyncErrors");
 const ApiFeatures = require("../utils/apifeatures");
 const cloudinary = require("cloudinary");
 
-// create product only admin
-exports.createProduct = catchAsyncError(async (req, res, next) => {
+// create car only admin
+exports.createCar = catchAsyncError(async (req, res, next) => {
 
     let images = [];
 
@@ -20,7 +20,7 @@ exports.createProduct = catchAsyncError(async (req, res, next) => {
 
     for (let i = 0; i < images.length; i++) {
         const result = await cloudinary.v2.uploader.upload(images[i], {
-            folder: "products"
+            folder: "cars"
         });
 
         imagesLink.push({
@@ -32,57 +32,57 @@ exports.createProduct = catchAsyncError(async (req, res, next) => {
 
     req.body.images = imagesLink;
     req.body.user = req.user.id;
-    const product = await Product.create(req.body);
+    const car = await Car.create(req.body);
 
     res.status(201).json({
         success: true,
-        product
+        car
     })
 });
 
-// get all products admin
-exports.getProductList = catchAsyncError(async (req, res, next) => {
-    const products = await Product.find();
+// get all cars admin
+exports.getCarList = catchAsyncError(async (req, res, next) => {
+    const cars = await Car.find();
     res.status(201).json({
         success: true,
-        products
+        cars
     })
 })
 
-// get all products
-exports.getAllProducts = catchAsyncError(async (req, res, next) => {
+// get all cars
+exports.getAllCars = catchAsyncError(async (req, res, next) => {
 
     const resultPerPage = 10;
-    const productsCount = await Product.countDocuments();
-    const apiFeature = new ApiFeatures(Product.find().sort({ created_at: -1 }), req.query)
+    const carsCount = await Car.countDocuments();
+    const apiFeature = new ApiFeatures(Car.find().sort({ created_at: -1 }), req.query)
         .search().filter()
 
-    let products = await apiFeature.query;
+    let cars = await apiFeature.query;
 
-    let filteredProductsCount = products.length;
+    let filteredCarsCount = cars.length;
 
     apiFeature.pagination(resultPerPage);
 
 
-    products = await apiFeature.query.clone();
+    cars = await apiFeature.query.clone();
 
     res.status(200).json({
         success: true,
-        products,
-        productsCount,
+        cars,
+        carsCount,
         resultPerPage,
-        filteredProductsCount
+        filteredCarsCount
     })
 });
 
-// update a product -only admin
-exports.updateProduct = catchAsyncError(async (req, res, next) => {
-    let product = await Product.findById(req.params.id);
+// update a car -only admin
+exports.updateCar = catchAsyncError(async (req, res, next) => {
+    let car = await Car.findById(req.params.id);
 
-    if (!product) {
+    if (!car) {
         return res.status(500).json({
             success: false,
-            "message": "product not found!"
+            "message": "car not found!"
         })
     }
 
@@ -100,10 +100,10 @@ exports.updateProduct = catchAsyncError(async (req, res, next) => {
         }
 
         if (images !== undefined) {
-            // Deleting product imgs from cloudinary
-            for (let i = 0; i < product.images.length; i++) {
+            // Deleting car imgs from cloudinary
+            for (let i = 0; i < car.images.length; i++) {
                 await cloudinary.v2.uploader.destroy(
-                    product.images[i].public_id
+                    car.images[i].public_id
                 );
 
             }
@@ -113,7 +113,7 @@ exports.updateProduct = catchAsyncError(async (req, res, next) => {
 
         for (let i = 0; i < images.length; i++) {
             const result = await cloudinary.v2.uploader.upload(images[i], {
-                folder: "products"
+                folder: "cars"
             });
 
             imagesLink.push({
@@ -126,7 +126,7 @@ exports.updateProduct = catchAsyncError(async (req, res, next) => {
     }
 
 
-    product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+    car = await Car.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
         runValidators: true,
         useFindAndModify: false
@@ -134,57 +134,57 @@ exports.updateProduct = catchAsyncError(async (req, res, next) => {
 
     res.status(200).json({
         success: true,
-        product
+        car
     })
 });
 
-// delete a product -- admin
-exports.deleteProduct = catchAsyncError(async (req, res, next) => {
-    const product = await Product.findById(req.params.id);
+// delete a car -- admin
+exports.deleteCar = catchAsyncError(async (req, res, next) => {
+    const car = await Car.findById(req.params.id);
 
-    if (!product) {
-        return next(new ErrorHandler("Product not found", 404));
+    if (!car) {
+        return next(new ErrorHandler("Car not found", 404));
     }
-    // Deleting product imgs from cloudinary
-    for (let i = 0; i < product.images.length; i++) {
+    // Deleting car imgs from cloudinary
+    for (let i = 0; i < car.images.length; i++) {
         await cloudinary.v2.uploader.destroy(
-            product.images[i].public_id
+            car.images[i].public_id
         );
 
     }
 
 
-    await product.remove();
+    await car.remove();
 
     res.status(200).json({
         success: true,
-        message: "product removed successfully"
+        message: "car removed successfully"
     })
 
 })
 
 
-// get a single product 
+// get a single car 
 
-exports.getProductDetails = catchAsyncError(async (req, res, next) => {
-    const product = await Product.findById(req.params.id);
-    if (!product) {
-        return next(new ErrorHandler("Product not found", 404))
+exports.getCarDetails = catchAsyncError(async (req, res, next) => {
+    const car = await Car.findById(req.params.id);
+    if (!car) {
+        return next(new ErrorHandler("Car not found", 404))
     }
-    const allProducts = await Product.find();
-    const similarProducts = allProducts.filter((p) => { return p._id !== product._id && p.category === product.category });
+    const allCars = await Car.find();
+    const similarCars = allCars.filter((p) => { return p._id !== car._id && p.category === car.category });
 
     res.status(200).json({
         success: true,
-        product,
-        similarProducts
+        car,
+        similarCars
     })
 
 });
 
 // create a new reviews or update the review
-exports.createProductReview = catchAsyncError(async (req, res, next) => {
-    const { rating, comment, productId } = req.body;
+exports.createCarReview = catchAsyncError(async (req, res, next) => {
+    const { rating, comment, carId } = req.body;
 
     const review = {
         user: req.user._id,
@@ -193,60 +193,60 @@ exports.createProductReview = catchAsyncError(async (req, res, next) => {
         comment
     };
 
-    const product = await Product.findById(productId);
+    const car = await Car.findById(carId);
 
-    const isReviewed = product.reviews.find((rev) => rev.user.toString() === req.user._id.toString());
+    const isReviewed = car.reviews.find((rev) => rev.user.toString() === req.user._id.toString());
 
     if (isReviewed) {
-        product.reviews.forEach(rev => {
+        car.reviews.forEach(rev => {
             if (rev.user.toString() === req.user._id.toString())
                 (rev.rating = rating), (rev.comment = comment);
 
         });
     }
     else {
-        product.reviews.push(review);
-        product.numOfReviews = product.reviews.length
+        car.reviews.push(review);
+        car.numOfReviews = car.reviews.length
     }
 
     let avg = 0;
 
-    product.reviews.forEach((rev) => {
+    car.reviews.forEach((rev) => {
         avg += rev.rating;
     });
 
-    product.ratings = avg / product.reviews.length;
+    car.ratings = avg / car.reviews.length;
 
-    await product.save({ validateBeforeSave: false });
+    await car.save({ validateBeforeSave: false });
     res.status(200).json({
         success: true,
     })
 });
 
-// Get all reviews fo single product
-exports.getProductReviews = catchAsyncError(async (req, res, next) => {
-    const product = await Product.findById(req.query.id);
+// Get all reviews fo single car
+exports.getCarReviews = catchAsyncError(async (req, res, next) => {
+    const car = await Car.findById(req.query.id);
 
-    if (!product) {
-        return next(new ErrorHandler("Product not found!", 404));
+    if (!car) {
+        return next(new ErrorHandler("Car not found!", 404));
     }
 
     res.status(200).json({
         success: true,
-        reviews: product.reviews,
+        reviews: car.reviews,
     });
 
 });
 
 // Delete a review
 exports.deleteReview = catchAsyncError(async (req, res, next) => {
-    const product = await Product.findById(req.query.productId);
+    const car = await Car.findById(req.query.carId);
 
-    if (!product) {
-        return next(new ErrorHander("Product not found", 404));
+    if (!car) {
+        return next(new ErrorHander("Car not found", 404));
     }
 
-    const reviews = product.reviews.filter(
+    const reviews = car.reviews.filter(
         (rev) => rev._id.toString() !== req.query.id.toString()
     );
 
@@ -266,8 +266,8 @@ exports.deleteReview = catchAsyncError(async (req, res, next) => {
 
     const numOfReviews = reviews.length;
 
-    await Product.findByIdAndUpdate(
-        req.query.productId,
+    await Car.findByIdAndUpdate(
+        req.query.carId,
         {
             reviews,
             ratings,
