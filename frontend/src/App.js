@@ -10,14 +10,17 @@ import Unauthorized from "./components/Unauthorized/Unauthorized"
 import RequiredAuth from "./components/RequiredAuth";
 import { connect } from "react-redux";
 import { useEffect } from "react";
-import { loadUser } from "./redux/actions/userActions";
+import { loadUser, logout } from "./redux/actions/userActions";
 import Cars from "./pages/Admin/Car/Cars";
 import AddCar from "./pages/Admin/Car/AddCar";
 import Admin from "./pages/Admin/Admin";
-import "./App.css"
+import "./App.css";
+import { Toaster } from "react-hot-toast";
+import Loading from "./components/Loading/index"
 
 
-function App({ loadUser, loading, isAuthenticated, user, error }) {
+
+function App({ loadUser, loading, isAuthenticated, user, error, logout }) {
   useEffect(() => {
     loadUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -25,16 +28,18 @@ function App({ loadUser, loading, isAuthenticated, user, error }) {
   }, []);
 
   if (loading) {
-    return <>Loading</>
+    return <><Loading /></>
   }
   return (
-    <>
+    <div className="main_container">
+      <Toaster toastOptions={{ duration: 3000 }} position="bottom-right" />
+
       <Routes>
         {/* Public Routes */}
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
-        <Route path="/" element={<Home />} />
-        <Route path="/" element={<Layout />}>
+        <Route path="/" element={<Home isAuthenticated={isAuthenticated} user={user} logout={logout} />} />
+        <Route path="/" element={<Layout user={user} />}>
 
           {/* Users Routes */}
           <Route element={<RequiredAuth isAuthenticated={isAuthenticated} user={user} role="user" />}>
@@ -56,7 +61,7 @@ function App({ loadUser, loading, isAuthenticated, user, error }) {
 
         </Route>
       </Routes>
-    </>
+    </div>
   );
 }
 
@@ -68,7 +73,8 @@ const mapStateToProps = ({
 });
 
 const mapDispatchToProps = {
-  loadUser
+  loadUser,
+  logout
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
