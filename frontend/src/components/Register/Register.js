@@ -299,7 +299,7 @@ const Register = ({ register, loading, isAuthenticated, error }) => {
             </div>
             <input type="submit" value="Register" className="__register_btn" />
             <Link to="/login">
-              Already have an account? <span>Register</span>
+              Already have an account? <span>Login</span>
             </Link>
           </form>
         </div>

@@ -172,7 +172,7 @@ const Login = ({
       toast.success("Logged in successfully!!");
       history(from, { replace: true });
     }
-  }, [error, isAuthenticated, from, error, toast]);
+  }, [error, isAuthenticated, from, error, toast, history, clearError]);
   if (loading) {
     return <Loading />;
   }

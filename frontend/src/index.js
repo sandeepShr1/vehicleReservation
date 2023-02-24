@@ -9,13 +9,15 @@ import store from "./redux/store"
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 
-  <Router>
-    <Provider store={store}>
-      <Routes>
-        <Route path='/*' element={<App />} />
-      </Routes>
-    </Provider>
-  </Router>
+  <React.StrictMode>
+    <Router>
+      <Provider store={store}>
+        <Routes>
+          <Route path='/*' element={<App />} />
+        </Routes>
+      </Provider>
+    </Router>
+  </React.StrictMode>
 
 );
 

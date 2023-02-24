@@ -1,13 +1,13 @@
 {
-  "name": "e-commerce",
+  "name": "car-rent",
   "version": "1.0.0",
   "description": "",
   "main": "backend/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node backend/server.js",
-    "dev": "nodemon backend/server.js --ignore client",
-    "both": "concurrently \"npm run dev\" \"cd ./frontend && npm run start \""
+    "server": "nodemon server --ignore frontend",
+    "both": "concurrently \"npm run server\" \"cd ./frontend && npm run start \""
   },
   "author": "",
   "license": "ISC",
@@ -23,7 +23,6 @@
     "mongoose": "^6.1.5",
     "nodemailer": "^6.7.2",
     "nodemon": "^2.0.15",
-    "overlay-navbar": "^1.1.1",
     "validator": "^13.7.0",
     "webfontloader": "^1.6.28"
   }

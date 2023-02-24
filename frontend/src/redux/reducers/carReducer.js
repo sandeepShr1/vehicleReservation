@@ -53,7 +53,8 @@ export const carsReducer = (state = { cars: [] }, action) => {
                         cars: action.payload.cars,
                         carsCount: action.payload.carsCount,
                         resultPerPage: action.payload.resultPerPage,
-                        filteredCarsCount: action.payload.filteredCarsCount
+                        filteredCarsCount: action.payload.filteredCarsCount,
+                        isError: false
                   }
             case actionTypes.ADMIN_CAR_SUCCESS:
                   return {
@@ -64,11 +65,13 @@ export const carsReducer = (state = { cars: [] }, action) => {
             case actionTypes.ADMIN_CAR_FAIL:
                   return {
                         loading: false,
-                        error: action.payload
+                        isError: true,
+                        error: action.payload,
                   }
             case actionTypes.CLEAR_ERRORS:
                   return {
                         ...state,
+                        isError: false,
                         error: null
                   }
 

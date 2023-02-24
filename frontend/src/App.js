@@ -39,7 +39,7 @@ function App({ loadUser, loading, isAuthenticated, user, error, logout }) {
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="/" element={<Home isAuthenticated={isAuthenticated} user={user} logout={logout} />} />
-        <Route path="/" element={<Layout user={user} />}>
+        <Route path="/" element={<Layout isAuthenticated={isAuthenticated} user={user} logout={logout} />}>
 
           {/* Users Routes */}
           <Route element={<RequiredAuth isAuthenticated={isAuthenticated} user={user} role="user" />}>
