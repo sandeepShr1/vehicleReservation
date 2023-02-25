@@ -90,7 +90,7 @@ const RegisterDiv = styled.div`
 
       .__register_title {
         color: #090914;
-        font-size: 5rem;
+        font-size: 4rem;
         font-weight: 600;
         width: fit-content;
         letter-spacing: 1px;
@@ -105,7 +105,7 @@ const RegisterDiv = styled.div`
         div {
           display: flex;
           flex-direction: column;
-          gap: 1.2rem;
+          gap: .7rem;
           p {
             font-style: normal;
             font-weight: 500;
@@ -114,7 +114,7 @@ const RegisterDiv = styled.div`
           }
           input {
             width: 100%;
-            padding: 2rem;
+            padding: 1.4rem;
             background: #f8fafc;
             border: 1px solid #cbd5e1;
             border-radius: 12px;
@@ -155,7 +155,7 @@ const RegisterDiv = styled.div`
           background-color: rgb(235, 235, 235);
         }
         .__register_btn {
-          margin-top: 2rem;
+          margin-top: 1rem;
           padding: 16px;
           gap: 10px;
           font-size: 1.6rem;

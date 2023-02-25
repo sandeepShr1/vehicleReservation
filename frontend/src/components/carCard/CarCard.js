@@ -21,6 +21,7 @@ const Card = styled.div`
         background-color: #ebebeb;
         transform: scale(1, 1);
         transition: transform 0.5s ease;
+        object-fit: cover;
       }
       .car-price {
         font-weight: 800;
@@ -56,7 +57,7 @@ const CarCard = ({ car }) => {
             className="car-image"
           />
           <p className="car-name">{car?.name}</p>
-          <p className="car-price">रू {car?.price} per day</p>
+          <p className="car-price">Rs. {car?.price} per day</p>
         </div>
       </Link>
     </Card>

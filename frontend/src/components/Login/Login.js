@@ -70,7 +70,7 @@ const LoginDiv = styled.div`
       height: 100%;
       display: flex;
       justify-content: center;
-      padding-left: 10rem;
+      padding-left: 7rem;
       flex-direction: column;
       gap: 10rem;
       @media (max-width: 1025px) {
@@ -112,14 +112,14 @@ const LoginDiv = styled.div`
           }
           input {
             width: 100%;
-            padding: 2rem;
+            padding: 1.5rem;
             background: #f8fafc;
             border: 1px solid #cbd5e1;
             border-radius: 12px;
           }
         }
         .__login_btn {
-          margin-top: 2rem;
+          margin-top: 1.2rem;
           padding: 1.6rem;
           gap: 1rem;
           font-size: 1.6rem;

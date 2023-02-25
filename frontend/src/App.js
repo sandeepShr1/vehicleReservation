@@ -17,6 +17,7 @@ import Admin from "./pages/Admin/Admin";
 import "./App.css";
 import { Toaster } from "react-hot-toast";
 import Loading from "./components/Loading/index"
+import CarDetails from "./components/CarDetails/CarDetails";
 
 
 
@@ -40,6 +41,7 @@ function App({ loadUser, loading, isAuthenticated, user, error, logout }) {
         <Route path="register" element={<Register />} />
         <Route path="/" element={<Home isAuthenticated={isAuthenticated} user={user} logout={logout} />} />
         <Route path="/" element={<Layout isAuthenticated={isAuthenticated} user={user} logout={logout} />}>
+          <Route path="/car/:id" element={<CarDetails />} />
 
           {/* Users Routes */}
           <Route element={<RequiredAuth isAuthenticated={isAuthenticated} user={user} role="user" />}>

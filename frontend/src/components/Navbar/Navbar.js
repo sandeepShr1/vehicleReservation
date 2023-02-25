@@ -5,7 +5,7 @@ import { useState } from "react";
 
 const Nav = styled.nav`
   width: 100%;
-  height: 5vh;
+  height: 7vh;
   background-color: #d6d6d6;
   display: flex;
   justify-content: space-between;
