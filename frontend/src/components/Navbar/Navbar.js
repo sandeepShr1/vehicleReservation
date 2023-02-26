@@ -83,7 +83,24 @@ const Nav = styled.nav`
     .__auth_nav_links {
       display: flex;
       gap: 2rem;
-      a {
+      span {
+        display: flex;
+        gap: 0.4rem;
+        img {
+          width: 25px;
+          height: 25px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+        .__user {
+          font-weight: 500;
+          font-size: 1.8rem;
+          color: #ed143d !important;
+          text-decoration: none;
+        }
+      }
+      a,
+      .__user {
         font-weight: 500;
         font-size: 1.8rem;
         color: #ed143d;
@@ -127,7 +144,12 @@ const Navbar = ({ user, isAuthenticated, logout }) => {
         </div>
         <div className="__auth_nav_links">
           {isAuthenticated ? (
-            <Link to="/profile">{user?.name}</Link>
+            <span>
+              {user?.avatar && <img src={user?.avatar.url} alt="" />}
+              <Link className="__user" to="/profile">
+                {user?.name}
+              </Link>
+            </span>
           ) : (
             <Link to="/login">Login</Link>
           )}
