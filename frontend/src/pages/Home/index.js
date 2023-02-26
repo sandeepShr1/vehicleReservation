@@ -288,7 +288,7 @@ const Index = ({
                 height="300"
                 title="map"
                 style={{ border: "0", borderRadius: "8px" }}
-                allowfullscreen=""
+                allowFullScreen=""
                 loading="lazy"
               ></iframe>
             </div>

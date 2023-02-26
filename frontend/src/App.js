@@ -11,13 +11,14 @@ import RequiredAuth from "./components/RequiredAuth";
 import { connect } from "react-redux";
 import { useEffect } from "react";
 import { loadUser, logout } from "./redux/actions/userActions";
-import Cars from "./pages/Admin/Car/Cars";
+import AdminCars from "./pages/Admin/Car/Cars";
 import AddCar from "./pages/Admin/Car/AddCar";
 import Admin from "./pages/Admin/Admin";
 import "./App.css";
 import { Toaster } from "react-hot-toast";
 import Loading from "./components/Loading/index"
 import CarDetails from "./components/CarDetails/CarDetails";
+import Cars from "./pages/Cars/Cars";
 
 
 
@@ -42,6 +43,8 @@ function App({ loadUser, loading, isAuthenticated, user, error, logout }) {
         <Route path="/" element={<Home isAuthenticated={isAuthenticated} user={user} logout={logout} />} />
         <Route path="/" element={<Layout isAuthenticated={isAuthenticated} user={user} logout={logout} />}>
           <Route path="/car/:id" element={<CarDetails />} />
+          <Route path="/cars" element={<Cars />} />
+
 
           {/* Users Routes */}
           <Route element={<RequiredAuth isAuthenticated={isAuthenticated} user={user} role="user" />}>
@@ -51,7 +54,7 @@ function App({ loadUser, loading, isAuthenticated, user, error, logout }) {
           <Route element={<RequiredAuth isAuthenticated={isAuthenticated} user={user} role="admin" />}>
             <Route path="admin" element={<Admin />} >
               <Route index element={<Dashboard />} />
-              <Route path="cars" element={<Cars />} />
+              <Route path="cars" element={<AdminCars />} />
               <Route path="car/add" element={<AddCar />} />
             </Route>
 
