@@ -18,7 +18,6 @@ app.use(fileUpload());
 const car = require("./routes/carRoute");
 const user = require("./routes/userRoute");
 const order = require("./routes/orderRoute")
-const banner = require("./routes/bannerRoute");
 
 
 //config 
@@ -30,13 +29,7 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 app.use('/api/v1', car);
 app.use('/api/v1', user);
 app.use('/api/v1', order);
-app.use('/api/v1', banner);
 
-// app.use(express.static(path.join(__dirname, "../frontend/build")));
-
-// app.get("*", (req, res) => {
-//       res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"))
-// })
 
 // middle for error
 app.use(errorMiddleware);
