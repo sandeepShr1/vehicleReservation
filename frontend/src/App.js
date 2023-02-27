@@ -19,6 +19,8 @@ import { Toaster } from "react-hot-toast";
 import Loading from "./components/Loading/index"
 import CarDetails from "./components/CarDetails/CarDetails";
 import Cars from "./pages/Cars/Cars";
+import About from "./components/About/About";
+import Contact from "./components/Contact/Contact";
 
 
 
@@ -44,7 +46,8 @@ function App({ loadUser, loading, isAuthenticated, user, error, logout }) {
         <Route path="/" element={<Layout isAuthenticated={isAuthenticated} user={user} logout={logout} />}>
           <Route path="/car/:id" element={<CarDetails />} />
           <Route path="/cars" element={<Cars />} />
-
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
 
           {/* Users Routes */}
           <Route element={<RequiredAuth isAuthenticated={isAuthenticated} user={user} role="user" />}>
@@ -56,6 +59,7 @@ function App({ loadUser, loading, isAuthenticated, user, error, logout }) {
               <Route index element={<Dashboard />} />
               <Route path="cars" element={<AdminCars />} />
               <Route path="car/add" element={<AddCar />} />
+              <Route path="car/:id" element={<AddCar />} />
             </Route>
 
           </Route>

@@ -61,11 +61,11 @@ const Sidebar = ({ user }) => {
         </span>
         <span>
           <RiCarFill size={20} />
-          <Link to="/admin/cars">Upload Vehicles</Link>
+          <Link to="/admin/cars">Vehicles</Link>
         </span>
         <span>
           <RiContactsBookUploadFill size={20} />
-          <Link to="/admin/bookings">My Booking</Link>
+          <Link to="/admin/bookings">Booking</Link>
         </span>
       </div>
     </SidebarDiv>

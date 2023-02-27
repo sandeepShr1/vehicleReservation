@@ -1,10 +1,16 @@
 import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { getAdminCars, clearError } from "../../../redux/actions/carActions";
+import { connect, useDispatch } from "react-redux";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+  getAdminCars,
+  clearError,
+  deleteCar,
+} from "../../../redux/actions/carActions";
 import styled from "styled-components";
 import Loading from "../../../components/Loading/index";
 import { RiDeleteBin7Fill, RiEdit2Fill } from "react-icons/ri";
+import { toast } from "react-hot-toast";
+import { DELETE_CAR_RESET } from "../../../redux/constants/carConstants";
 
 const VehicleDiv = styled.div`
   width: 100%;
@@ -88,24 +94,38 @@ const StyledTable = styled.table`
   }
 `;
 
-const Cars = ({ getAdminCars, clearError, loading, error, cars }) => {
+const Cars = ({
+  getAdminCars,
+  clearError,
+  loading,
+  deleteCar,
+  error,
+  cars,
+  deleteError,
+  isDeleted,
+}) => {
+  const dispatch = useDispatch();
+  const deleteCarHandler = (id) => {
+    deleteCar(id);
+  };
+  const history = useNavigate();
   useEffect(() => {
     if (error) {
-      // alert.error(error);
+      toast.error(error);
       clearError();
     }
-    // if (deleteError) {
-    //       alert.error(deleteError);
-    //       dispatch(clearError());
-    // }
-    // if (isDeleted) {
-    //       alert.success("Product Deleted Successfully");
-    //       history("/admin/dashboard");
-    //       dispatch({ type: DELETE_PRODUCT_RESET });
-    // }
+    if (deleteError) {
+      toast.error(deleteError);
+      clearError();
+    }
+    if (isDeleted) {
+      toast.success("Product Deleted Successfully");
+      history("/admin/cars");
+      dispatch({ type: DELETE_CAR_RESET });
+    }
 
     getAdminCars();
-  }, [error]);
+  }, [error, toast, isDeleted, history, deleteError]);
   if (loading) {
     return <Loading />;
   }
@@ -137,8 +157,18 @@ const Cars = ({ getAdminCars, clearError, loading, error, cars }) => {
                   <td>{car.price}</td>
                   <td>
                     <span className="__actions">
-                      <RiDeleteBin7Fill size={16} />
-                      <RiEdit2Fill size={16} />
+                      <RiDeleteBin7Fill
+                        onClick={() => deleteCarHandler(car._id)}
+                        size={16}
+                      />
+                      <Link
+                        style={{
+                          backgroundColor: "transparent",
+                        }}
+                        to={`/admin/car/${car._id}`}
+                      >
+                        <RiEdit2Fill size={16} fill="#000" />
+                      </Link>
                     </span>
                   </td>
                 </tr>
@@ -149,15 +179,21 @@ const Cars = ({ getAdminCars, clearError, loading, error, cars }) => {
     </VehicleDiv>
   );
 };
-const mapStateToProps = ({ carsState: { loading, error, cars } }) => ({
+const mapStateToProps = ({
+  carsState: { loading, error, cars },
+  car: { error: deleteError, isDeleted },
+}) => ({
   loading,
   error,
   cars,
+  deleteError,
+  isDeleted,
 });
 
 const mapDispatchToProps = {
   getAdminCars,
   clearError,
+  deleteCar,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

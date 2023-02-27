@@ -61,6 +61,7 @@ const CarDetail = styled.div`
             font-weight: 400;
             font-size: 2.4rem;
             color: #1e1e1e;
+            text-transform: capitalize;
           }
         }
       }
@@ -105,14 +106,16 @@ const CarDetails = ({ getCarDetails, car, loading, error }) => {
             <li>Vehicle Name</li>
             <li>Model</li>
             <li>Year</li>
-            <li>Seats</li>
+            <li>Vehicle Type</li>
+            <li>Number Plate</li>
             <li>Rate</li>
           </ul>
           <ul>
             <li>{car?.name}</li>
             <li>{car?.model}</li>
             <li>{car?.year}</li>
-            <li>-</li>
+            <li>{car?.vehicleType}</li>
+            <li>{car?.numberPlate}</li>
             <li>Rs. {car?.price} per day</li>
           </ul>
         </div>

@@ -23,6 +23,14 @@ const carSchema = new mongoose.Schema({
         required: [true, "Please enter price"],
         maxLength: [8, "Price cannot exceed 8 character."]
     },
+    numberPlate: {
+        type: String,
+        required: [true, "Please enter number plate"],
+    },
+    vehicleType: {
+        type: String,
+        required: [true, , "Please enter vehicle type"]
+    },
     ratings: {
         type: Number,
         default: 0

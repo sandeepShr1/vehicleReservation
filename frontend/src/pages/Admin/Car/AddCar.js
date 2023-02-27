@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { createCar, clearError } from "../../../redux/actions/carActions";
-import { useNavigate } from "react-router-dom";
+import {
+  createCar,
+  clearError,
+  updateCar,
+  getCarDetails,
+} from "../../../redux/actions/carActions";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { NEW_CAR_RESET } from "../../../redux/constants/carConstants";
+import {
+  NEW_CAR_RESET,
+  UPDATE_CAR_RESET,
+} from "../../../redux/constants/carConstants";
 import styled from "styled-components";
 import Loading from "../../../components/Loading/index";
+import { toast } from "react-hot-toast";
 
 const CarForm = styled.div`
   display: flex;
@@ -40,6 +49,7 @@ const CarForm = styled.div`
             font-size: 1.2rem;
             color: #000000;
           }
+          select,
           input,
           textarea {
             width: 280px;
@@ -48,6 +58,7 @@ const CarForm = styled.div`
             border: 1px solid #cbd5e1;
             border-radius: 12px;
             padding-left: 2rem;
+            padding-top: 1rem;
           }
         }
         .__img_input > input::file-selector-button {
@@ -88,17 +99,41 @@ const CarForm = styled.div`
   }
 `;
 
-const AddCar = ({ createCar, loading, clearError, success, error }) => {
+const AddCar = ({
+  createCar,
+  loading,
+  clearError,
+  success,
+  error,
+  updateCar,
+  updateError,
+  isUpdated,
+  getCarDetails,
+  productError,
+  car,
+}) => {
   const history = useNavigate();
   const dispatch = useDispatch();
 
+  const { id } = useParams();
+
   const [name, setName] = useState("");
+  const [numberPlate, setNumberPlate] = useState("");
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("");
   const [model, setModel] = useState("");
   const [year, setYear] = useState(0);
-  const [images, setImages] = useState([]);
+  const [oldImages, setOldImages] = useState([]);
+  const [vehicleType, setVehicleType] = useState("");
   const [imagesPreview, setImagesPreview] = useState([]);
+  const [images, setImages] = useState([]);
+  const vehicleTypes = [
+    "sedan",
+    "hatchback",
+    "suv (7 seater)",
+    "electric",
+    "suv(5 seater)",
+  ];
 
   const createCarSubmitHandler = (e) => {
     e.preventDefault();
@@ -106,15 +141,23 @@ const AddCar = ({ createCar, loading, clearError, success, error }) => {
     const myForm = new FormData();
 
     myForm.set("name", name);
+    myForm.set("numberPlate", numberPlate);
+
     myForm.set("price", price);
     myForm.set("description", description);
+    myForm.set("vehicleType", vehicleType);
     myForm.set("model", model);
+
     myForm.set("year", year);
 
     images.forEach((image) => {
       myForm.append("images", image);
     });
-    createCar(myForm);
+    if (id) {
+      updateCar(id, myForm);
+    } else {
+      createCar(myForm);
+    }
   };
 
   const createCarImagesChange = (e) => {
@@ -138,16 +181,54 @@ const AddCar = ({ createCar, loading, clearError, success, error }) => {
   };
   useEffect(() => {
     if (error) {
-      // alert.error(error);
+      toast.error(error);
+      clearError();
+    }
+    if (productError) {
+      toast.error(error);
       clearError();
     }
 
     if (success) {
-      // alert.success("Car Created Successfully");
+      toast.success("Car Created Successfully");
       history("/admin/cars");
       dispatch({ type: NEW_CAR_RESET });
     }
-  }, [dispatch, error, history, success]);
+    if (id) {
+      getCarDetails(id);
+    }
+    if (updateError) {
+      toast.error(error);
+      dispatch(clearError());
+    }
+
+    if (isUpdated) {
+      toast.success("Car Updated Successfully");
+      history("/admin/cars");
+      dispatch({ type: UPDATE_CAR_RESET });
+    }
+  }, [
+    dispatch,
+    error,
+    history,
+    success,
+    id,
+    isUpdated,
+    productError,
+    updateError,
+  ]);
+  useEffect(() => {
+    if (car?._id) {
+      setName(car?.name);
+      setNumberPlate(car?.numberPlate);
+      setPrice(car?.price);
+      setDescription(car?.description);
+      setModel(car?.model);
+      setYear(car?.year);
+      setOldImages(car?.images);
+      setVehicleType(car?.vehicleType);
+    }
+  }, [car]);
 
   if (loading) {
     return <Loading />;
@@ -177,8 +258,21 @@ const AddCar = ({ createCar, loading, clearError, success, error }) => {
               <input
                 type="number"
                 required
+                value={price}
                 onChange={(e) => setPrice(e.target.value)}
               />
+            </div>
+            <div>
+              <span>Vehicle Type</span>
+
+              <select onChange={(e) => setVehicleType(e.target.value)}>
+                <option value="">Choose Vehicle Type</option>
+                {vehicleTypes.map((v) => (
+                  <option key={v} value={v}>
+                    {v}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div>
@@ -197,8 +291,18 @@ const AddCar = ({ createCar, loading, clearError, success, error }) => {
               <span>Model Number</span>
               <input
                 type="text"
+                value={model}
                 required
                 onChange={(e) => setModel(e.target.value)}
+              />
+            </div>
+            <div>
+              <span>Number Plate</span>
+              <input
+                type="text"
+                required
+                value={numberPlate}
+                onChange={(e) => setNumberPlate(e.target.value)}
               />
             </div>
 
@@ -206,6 +310,7 @@ const AddCar = ({ createCar, loading, clearError, success, error }) => {
               <span>Year</span>
               <input
                 type="number"
+                value={year}
                 required
                 onChange={(e) => setYear(e.target.value)}
               />
@@ -223,6 +328,15 @@ const AddCar = ({ createCar, loading, clearError, success, error }) => {
             </div>
 
             <div className="createCarFormImage">
+              {oldImages &&
+                oldImages.map((image, index) => (
+                  <img
+                    key={index}
+                    src={image.url}
+                    alt="product preview"
+                    loading="lazy"
+                  />
+                ))}
               {imagesPreview.map((image, index) => (
                 <img key={index} src={image} alt="Car Preview" />
               ))}
@@ -242,15 +356,25 @@ const AddCar = ({ createCar, loading, clearError, success, error }) => {
   );
 };
 
-const mapStateToProps = ({ newCarState: { loading, success, error } }) => ({
+const mapStateToProps = ({
+  newCarState: { loading, success, error },
+  car: { error: updateError, isUpdated },
+  carDetails: { error: productError, car },
+}) => ({
   loading,
   success,
   error,
+  updateError,
+  isUpdated,
+  productError,
+  car,
 });
 
 const mapDispatchToProps = {
   createCar,
   clearError,
+  updateCar,
+  getCarDetails,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

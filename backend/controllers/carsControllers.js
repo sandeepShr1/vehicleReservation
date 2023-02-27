@@ -172,7 +172,7 @@ exports.getCarDetails = catchAsyncError(async (req, res, next) => {
         return next(new ErrorHandler("Car not found", 404))
     }
     const allCars = await Car.find();
-    const similarCars = allCars.filter((p) => { return p._id !== car._id && p.category === car.category });
+    const similarCars = allCars.filter((p) => { return p._id !== car._id && p.vehicleType === car.vehicleType });
 
     res.status(200).json({
         success: true,

@@ -24,6 +24,25 @@ const CarsDiv = styled.div`
     width: 100%;
     display: flex;
     justify-content: space-around;
+    @media (max-width:769px){
+      flex-direction: column;
+      align-items: center;
+      gap: 4rem;
+    }
+    .__vehicle_type{
+      display: flex;
+          flex-direction: column;
+          gap: 1rem;
+          
+          select{
+            width: 280px;
+            height: 65px;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding-left: 2rem;
+          }
+    }
     .search-container {
       .search {
         position: relative;
@@ -34,6 +53,9 @@ const CarsDiv = styled.div`
           border: 1px solid #cbd5e1;
           border-radius: 12px;
           padding-left: 1rem;
+          @media (max-width:769px){
+            height:16rem;
+          }
         }
         .searchButton {
           position: absolute;
@@ -157,8 +179,16 @@ const Cars = ({
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [keyword, setKeyword] = useState("");
-
+  const [vehicleType, setVehicleType] = useState("")
   const [price, setPrice] = useState([0, 10000]);
+
+  const vehicleTypes = [
+    "sedan",
+    "hatchback",
+    "suv (7 seater)",
+    "electric",
+    "suv(5 seater)"
+  ];
 
   const searchSubmitHandler = (e) => {
     e.preventDefault();
@@ -171,8 +201,8 @@ const Cars = ({
       clearError();
     }
 
-    getCar(keyword, currentPage, price);
-  }, [error, toast, currentPage, price]);
+    getCar(keyword, currentPage, price, vehicleType);
+  }, [error, toast, currentPage, price, vehicleType]);
   if (loading) {
     <Loading />;
   }
@@ -197,6 +227,16 @@ const Cars = ({
               <FaSearch size={20} fill="#ed143d" />
             </button>
           </form>
+        </div>
+        <div className="__vehicle_type">
+          <select onChange={(e) => setVehicleType(e.target.value)}>
+            <option value="">Choose Vehicle Type</option>
+            {vehicleTypes.map((v) => (
+              <option key={v} value={v}>
+                {v}
+              </option>
+            ))}
+          </select>
         </div>
         <ReactSlider
           className="horizontal-slider"
