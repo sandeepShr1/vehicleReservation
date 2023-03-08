@@ -95,6 +95,7 @@ const CarForm = styled.div`
       font-weight: 600;
       font-size: 1.6rem;
       border: none;
+      cursor: pointer;
     }
   }
 `;
@@ -346,9 +347,9 @@ const AddCar = ({
           <button
             id="createCarBtn"
             type="submit"
-            // disabled={loading ? true : false}
+          // disabled={loading ? true : false}
           >
-            Create
+            Save
           </button>
         </form>
       </div>

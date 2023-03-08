@@ -62,7 +62,7 @@ const StyledTable = styled.table`
     display: flex;
     gap: 2rem;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
   }
   tr {
     :hover {
@@ -76,7 +76,7 @@ const StyledTable = styled.table`
   }
   th,
   td {
-    text-align: center;
+    text-align: start;
     margin: 0;
     padding: 0.5rem;
     :last-child {
@@ -89,7 +89,7 @@ const StyledTable = styled.table`
   .__actions {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
     gap: 2rem;
   }
 `;
@@ -167,7 +167,7 @@ const Cars = ({
                         }}
                         to={`/admin/car/${car._id}`}
                       >
-                        <RiEdit2Fill size={16} fill="#000" />
+                        <RiEdit2Fill size={18} fill="#000" />
                       </Link>
                     </span>
                   </td>

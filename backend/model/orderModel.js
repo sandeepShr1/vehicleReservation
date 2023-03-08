@@ -1,57 +1,46 @@
 const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema({
-      shippingInfo: {
-            address: {
-                  type: String,
-                  required: true
-            },
-            city: {
-                  type: String,
-                  required: true
-            },
-            state: {
-                  type: String,
-                  required: true
-            },
-            pinCode: {
-                  type: Number,
-                  required: true
-            },
-            phoneNo: {
-                  type: Number,
-                  required: true
-            },
+      car: {
+            type: mongoose.Schema.ObjectId,
+            required: [true, "can't be blank"],
+            ref: 'Car'
       },
-      orderItems: [
-            {
-                  name: {
-                        type: String,
-                        required: true
-                  },
-                  price: {
-                        type: Number,
-                        required: true
-                  },
-                  quantity: {
-                        type: Number,
-                        required: true
-                  },
-                  image: {
-                        type: String,
-                        required: true
-                  },
-                  product: {
-                        type: mongoose.Schema.ObjectId,
-                        ref: "Product",
-                        required: true
-                  }
-            }
-      ],
+      from: {
+            type: Date,
+            required: [true, "can't be blank"]
+      },
+      to: {
+            type: Date,
+            required: [true, "can't be blank"]
+      },
       user: {
             type: mongoose.Schema.ObjectId,
             ref: "User",
             required: true
+      },
+      status: {
+            type: String,
+            enum: [
+                  "pending",
+                  "paid",
+                  "reserved",
+                  "cancelled",
+            ],
+            required: [true, "can't be blank"],
+      },
+      cancellation: {
+            type: Boolean,
+            default: false
+      },
+
+      price: {
+            type: Number,
+            required: [true, "can't be blank"],
+      },
+      cancelRequest: {
+            type: Boolean,
+            default: false
       },
       paymentInfo: {
             id: {
@@ -67,32 +56,6 @@ const orderSchema = new mongoose.Schema({
             type: Date,
             required: true
       },
-      itemsPrice: {
-            type: Number,
-            default: 0,
-            required: true
-      },
-      taxPrice: {
-            type: Number,
-            default: 0,
-            required: true
-      },
-      shippingPrice: {
-            type: Number,
-            default: 0,
-            required: true
-      },
-      totalPrice: {
-            type: Number,
-            default: 0,
-            required: true
-      },
-      orderStatus: {
-            type: String,
-            required: true,
-            default: "Processing"
-      },
-      deliveredAt: Date,
       createdAt: {
             type: Date,
             default: Date.now,

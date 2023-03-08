@@ -18,6 +18,7 @@ app.use(fileUpload());
 const car = require("./routes/carRoute");
 const user = require("./routes/userRoute");
 const order = require("./routes/orderRoute")
+const payment = require("./routes/paymentRoutes")
 
 
 //config 
@@ -29,6 +30,7 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 app.use('/api/v1', car);
 app.use('/api/v1', user);
 app.use('/api/v1', order);
+app.use('/api/v1', payment);
 
 
 // middle for error

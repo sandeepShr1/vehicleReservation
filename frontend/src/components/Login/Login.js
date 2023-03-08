@@ -129,6 +129,7 @@ const LoginDiv = styled.div`
           background: #ed143d;
           border-radius: 9px;
           color: #f8fafc;
+          cursor: pointer;
         }
         a {
           text-decoration: none;

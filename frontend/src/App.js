@@ -21,6 +21,10 @@ import CarDetails from "./components/CarDetails/CarDetails";
 import Cars from "./pages/Cars/Cars";
 import About from "./components/About/About";
 import Contact from "./components/Contact/Contact";
+import Booking from "./components/Booking/Booking";
+import MyBooking from "./components/Booking/MyBooking";
+import AdminBooking from "./pages/Admin/Booking/Booking"
+import Users from "./pages/Admin/Users/Users";
 
 
 
@@ -52,6 +56,8 @@ function App({ loadUser, loading, isAuthenticated, user, error, logout }) {
           {/* Users Routes */}
           <Route element={<RequiredAuth isAuthenticated={isAuthenticated} user={user} role="user" />}>
             <Route path="profile" element={<Profile />} />
+            <Route path="booking/new" element={<Booking />} />
+            <Route path="mybooking" element={<MyBooking />} />
           </Route>
           {/* admin Routes */}
           <Route element={<RequiredAuth isAuthenticated={isAuthenticated} user={user} role="admin" />}>
@@ -60,6 +66,8 @@ function App({ loadUser, loading, isAuthenticated, user, error, logout }) {
               <Route path="cars" element={<AdminCars />} />
               <Route path="car/add" element={<AddCar />} />
               <Route path="car/:id" element={<AddCar />} />
+              <Route path="bookings" element={<AdminBooking />} />
+              <Route path="user" element={<Users />} />
             </Route>
 
           </Route>

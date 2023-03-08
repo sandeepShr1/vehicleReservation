@@ -6,23 +6,21 @@ const catchAsyncError = require("../middleware/catchAsyncErrors");
 // create a order
 exports.createOrder = catchAsyncError(async (req, res, next) => {
       const {
-            shippingInfo,
-            orderItems,
+            car,
+            from,
+            to,
+            status,
+            price,
             paymentInfo,
-            itemsPrice,
-            taxPrice,
-            shippingPrice,
-            totalPrice
       } = req.body;
 
       const order = await Order.create({
-            shippingInfo,
-            orderItems,
+            car,
+            from,
+            to,
+            status,
+            price,
             paymentInfo,
-            itemsPrice,
-            taxPrice,
-            shippingPrice,
-            totalPrice,
             paidAt: Date.now(),
             user: req.user._id
       });
@@ -83,12 +81,12 @@ exports.updateOrder = catchAsyncError(async (req, res, next) => {
             return next(new ErrorHandler("Car not found!", 404));
       }
 
-      if (order.orderStatus === "Delivered") {
-            return next(new ErrorHandler("You have already delivered this order", 400));
+      if (order.status === "paid") {
+            return next(new ErrorHandler("Already Paid", 400));
       }
 
 
-      if (req.body.status === "Shipped") {
+      if (req.body.status === "cancelled") {
             order.orderItems.forEach(async (o) => {
                   await updateStock(o.car, o.quantity);
             });

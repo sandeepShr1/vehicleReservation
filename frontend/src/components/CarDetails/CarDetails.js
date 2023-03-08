@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getCarDetails } from "../../redux/actions/carActions";
 import Loading from "../Loading/index";
 import styled from "styled-components";
 import DateRangeComp from "../DateRange/DateRangeComp";
-import format from "date-fns/format";
 
 const CarDetail = styled.div`
   width: 100%;
@@ -69,6 +68,7 @@ const CarDetail = styled.div`
   }
   .__book {
     .__book_btn {
+      margin: 2rem 0;
       padding: 1.6rem 2rem;
       border: none;
       background: #ed143d;
@@ -86,6 +86,13 @@ const CarDetail = styled.div`
 const CarDetails = ({ getCarDetails, car, loading, error }) => {
   const [rangeDates, setRangeDates] = useState([]);
   const { id } = useParams();
+  const history = useNavigate();
+
+  const handleBooking = () => {
+    const items = { car: car, rangeDates: rangeDates };
+    localStorage.setItem("booking", JSON.stringify(items));
+    history("../booking/new", { replace: true });
+  };
 
   useEffect(() => {
     getCarDetails(id);
@@ -93,6 +100,7 @@ const CarDetails = ({ getCarDetails, car, loading, error }) => {
   if (loading) {
     return <Loading />;
   }
+  console.log(rangeDates);
   return (
     <CarDetail>
       <p className="__t1">Great Choice</p>
@@ -111,23 +119,20 @@ const CarDetails = ({ getCarDetails, car, loading, error }) => {
             <li>Rate</li>
           </ul>
           <ul>
-            <li>{car?.name}</li>
-            <li>{car?.model}</li>
-            <li>{car?.year}</li>
-            <li>{car?.vehicleType}</li>
-            <li>{car?.numberPlate}</li>
-            <li>Rs. {car?.price} per day</li>
+            <li>{car?.name || "-"}</li>
+            <li>{car?.model || "-"}</li>
+            <li>{car?.year || "-"}</li>
+            <li>{car?.vehicleType || "-"}</li>
+            <li>{car?.numberPlate || "-"}</li>
+            <li>Rs. {car?.price || "-"} per day</li>
           </ul>
         </div>
         <div className="__book">
           <DateRangeComp setRangeDates={setRangeDates} />
-          {JSON.stringify(
-            rangeDates?.map((r) => ({
-              startDate: format(r.startDate, "MM/dd/yyyy"),
-              endDate: format(r.endDate, "MM/dd/yyyy"),
-            }))
-          )}
-          <button className="__book_btn">Book Now</button>
+
+          <button className="__book_btn" onClick={handleBooking}>
+            Book Now
+          </button>
         </div>
       </div>
     </CarDetail>

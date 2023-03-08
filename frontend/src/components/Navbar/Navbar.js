@@ -138,6 +138,9 @@ const Navbar = ({ user, isAuthenticated, logout }) => {
           {isAuthenticated && user?.role === "admin" && (
             <Link to="/admin">Dashboard</Link>
           )}
+          {isAuthenticated && (
+            <Link to="/mybooking">Booking</Link>
+          )}
           <Link to="/cars">Cars</Link>
           <Link to="/about">About us</Link>
           <Link to="/contact">Contact</Link>
