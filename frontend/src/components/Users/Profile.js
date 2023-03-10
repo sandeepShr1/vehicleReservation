@@ -5,11 +5,12 @@ import {
   clearError,
   loadUser,
   updateProfile,
+  updatePassword
 } from "../../redux/actions/userActions";
 import styled from "styled-components";
 import { FaUserEdit } from "react-icons/fa";
 import toast from "react-hot-toast";
-import { UPDATE_PROFILE_RESET } from "../../redux/constants/userConstants";
+import { UPDATE_PASSWORD_RESET, UPDATE_PROFILE_RESET } from "../../redux/constants/userConstants";
 
 const ProfileDiv = styled.div`
   display: flex;
@@ -51,13 +52,13 @@ const ProfileDiv = styled.div`
       :hover {
         color: #000;
       }
-      span {
+      p {
         font-size: 1.8rem;
       }
     }
   }
-  .__edit_profile {
-    display: ${(props) => (props.isEdit ? "block" : "none")};
+  .__edit_profile,.__change_password {
+    display: none;
     width: 50%;
     .__profile_edit_title {
       font-weight: 400;
@@ -186,12 +187,18 @@ const Profile = ({
   profileLoading,
   updateError,
   isUpdated,
+  updatePassword
 }) => {
   const [isEdit, setIsEdit] = useState(false);
+  const [isChangePassword, setIsChangePassword] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [avatar, setAvatar] = useState("/Profile.png");
   const [avatarPreview, setAvatarPreview] = useState("/Profile.png");
+
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const dispatch = useDispatch();
   const updateProfileSubmit = (e) => {
@@ -218,6 +225,16 @@ const Profile = ({
       reader.readAsDataURL(e.target.files[0]);
     }
   };
+  const updatePasswordSubmit = (e) => {
+    e.preventDefault();
+
+    const myForm = new FormData();
+
+    myForm.set("oldPassword", oldPassword);
+    myForm.set("newPassword", newPassword);
+    myForm.set("confirmPassword", confirmPassword);
+    updatePassword(myForm);
+  }
   useEffect(() => {
     if (user) {
       setName(user.name);
@@ -237,6 +254,10 @@ const Profile = ({
       dispatch({
         type: UPDATE_PROFILE_RESET,
       });
+      dispatch({
+        type: UPDATE_PASSWORD_RESET,
+
+      })
     }
   }, [dispatch, updateError, toast, user, isUpdated]);
   if (loading) {
@@ -251,10 +272,14 @@ const Profile = ({
         </div>
         <button className="__edit" onClick={() => setIsEdit(!isEdit)}>
           <FaUserEdit size={20} />
-          <span>Edit</span>
+          <p>Edit</p>
+        </button>
+        <button className="__edit" onClick={() => setIsChangePassword(!isChangePassword)}>
+          <FaUserEdit size={20} />
+          <p>Change Password</p>
         </button>
       </div>
-      <div className="__edit_profile">
+      <div className="__edit_profile" style={{ display: isEdit ? "block" : "none" }}>
         <p className="__profile_edit_title">Edit Your Profile</p>
         <form
           encType="multipart/form-data"
@@ -298,6 +323,50 @@ const Profile = ({
           <input type="submit" value="Save" className="__register_btn" />
         </form>
       </div>
+      <div className="__change_password" style={{ display: isChangePassword ? "block" : "none" }}>
+        <p className="__profile_edit_title">Edit Your Profile</p>
+        <form
+          encType="multipart/form-data"
+          onSubmit={updatePasswordSubmit}
+          className="__register__form"
+          autoComplete="off"
+        >
+          <div>
+            <p>Old Password</p>
+            <input
+              type="password"
+              placeholder=""
+              required
+              name="oldPassword"
+              value={oldPassword}
+              onChange={(e) => setOldPassword(e.target.value)}
+            />
+          </div>
+          <div>
+            <p>New Password</p>
+            <input
+              type="password"
+              placeholder=""
+              required
+              name="newPassword"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+          </div>
+          <div>
+            <p>Confirm Password</p>
+            <input
+              type="password"
+              placeholder=""
+              required
+              name="confirmPassword"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          </div>
+          <input type="submit" value="Save" className="__register_btn" />
+        </form>
+      </div>
       <div className="__my_details">
         <p className="__t3">General</p>
         <div className="__details">
@@ -331,6 +400,7 @@ const mapStateToProps = ({
 const mapDispatchToProps = {
   loadUser,
   updateProfile,
+  updatePassword
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

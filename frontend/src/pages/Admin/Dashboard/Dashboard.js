@@ -108,6 +108,9 @@ const Dashboard = ({
       },
     ],
   };
+  if (loading) {
+    return <Loading />
+  }
   return (
     <DashboardDiv>
       <p className="__t2">Dashboard</p>

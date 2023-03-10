@@ -25,6 +25,8 @@ import Booking from "./components/Booking/Booking";
 import MyBooking from "./components/Booking/MyBooking";
 import AdminBooking from "./pages/Admin/Booking/Booking"
 import Users from "./pages/Admin/Users/Users";
+import ForgotPassword from "./components/ResetPassword/ForgotPassword.js"
+import ResetPassword from "./components/ResetPassword/ResetPassword";
 
 
 
@@ -52,6 +54,9 @@ function App({ loadUser, loading, isAuthenticated, user, error, logout }) {
           <Route path="/cars" element={<Cars />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="forgotpassword" element={<ForgotPassword />} />
+          <Route path="password/reset/:token" element={<ResetPassword />} />
+
 
           {/* Users Routes */}
           <Route element={<RequiredAuth isAuthenticated={isAuthenticated} user={user} role="user" />}>

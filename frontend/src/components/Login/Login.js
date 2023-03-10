@@ -206,7 +206,7 @@ const Login = ({
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <Link to="#" style={{ textAlign: "right" }}>
+            <Link to="/forgotpassword" style={{ textAlign: "right" }}>
               <span>Forgot password?</span>
             </Link>
             <button className="__login_btn" onClick={handleLogin}>
