@@ -27,6 +27,7 @@ import AdminBooking from "./pages/Admin/Booking/Booking"
 import Users from "./pages/Admin/Users/Users";
 import ForgotPassword from "./components/ResetPassword/ForgotPassword.js"
 import ResetPassword from "./components/ResetPassword/ResetPassword";
+import Message from "./pages/Admin/Message/Message";
 
 
 
@@ -73,6 +74,8 @@ function App({ loadUser, loading, isAuthenticated, user, error, logout }) {
               <Route path="car/:id" element={<AddCar />} />
               <Route path="bookings" element={<AdminBooking />} />
               <Route path="user" element={<Users />} />
+              <Route path="contacts" element={<Message />} />
+
             </Route>
 
           </Route>

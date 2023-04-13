@@ -19,7 +19,7 @@ const car = require("./routes/carRoute");
 const user = require("./routes/userRoute");
 const order = require("./routes/orderRoute")
 const payment = require("./routes/paymentRoutes")
-
+const contact = require("./routes/contactRoute")
 
 //config 
 if (process.env.NODE_ENV !== "PRODUCTION") {
@@ -31,6 +31,7 @@ app.use('/api/v1', car);
 app.use('/api/v1', user);
 app.use('/api/v1', order);
 app.use('/api/v1', payment);
+app.use('/api/v1', contact);
 
 
 // middle for error

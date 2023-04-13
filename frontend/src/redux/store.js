@@ -6,8 +6,10 @@ import { forgotPasswordReducer, profileReducer, resetPasswordReducer, userDetail
 import { cartReducer } from "./reducers/cartReducer";
 import { myOrderDetailsReducer, myOrdersReducer, newOrderReducer, orderListReducer, orderReducer } from "./reducers/orderReducer"
 import { BannerReducer } from "./reducers/bannerReducer";
+import { messageReducer } from "./reducers/messageReducer"
 
 const reducer = combineReducers({
+      messageState: messageReducer,
       carsState: carsReducer,
       carDetails: carDetailsReducer,
       userState: userReducer,

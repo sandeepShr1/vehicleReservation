@@ -67,6 +67,10 @@ const Sidebar = ({ user }) => {
           <RiContactsBookUploadFill size={20} />
           <Link to="/admin/bookings">Booking</Link>
         </span>
+        <span>
+          <RiContactsBookUploadFill size={20} />
+          <Link to="/admin/contacts">Contact</Link>
+        </span>
       </div>
     </SidebarDiv>
   );

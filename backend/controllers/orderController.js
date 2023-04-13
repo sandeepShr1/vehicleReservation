@@ -2,6 +2,8 @@ const Order = require("../model/orderModel");
 const Car = require("../model/carModel");
 const ErrorHandler = require("../utils/errorHandler")
 const catchAsyncError = require("../middleware/catchAsyncErrors");
+const sendEmail = require("../utils/sendEmail");
+
 
 // create a order
 exports.createOrder = catchAsyncError(async (req, res, next) => {
@@ -12,7 +14,10 @@ exports.createOrder = catchAsyncError(async (req, res, next) => {
             status,
             price,
             paymentInfo,
+            car_name
       } = req.body;
+      console.log(req.user)
+
 
       const order = await Order.create({
             car,
@@ -24,6 +29,26 @@ exports.createOrder = catchAsyncError(async (req, res, next) => {
             paidAt: Date.now(),
             user: req.user._id
       });
+
+
+      const message = `Thank you for renting ${car_name}. Your total is:- \n\n Rs. ${price}\n\n From:- ${from}\n\n To:- ${to} \n\nIf you have not rented car then, please ignore it`;
+
+      try {
+            await sendEmail({
+                  email: req.user.email,
+                  subject: `Vehicle rented successfully `,
+                  message,
+            })
+            res.status(200).json({
+                  success: true,
+                  message: `Email sent to ${req.user.email} successfully`
+            });
+
+      } catch (error) {
+            return next(new ErrorHandler(
+                  error.message, 500
+            ))
+      }
       res.status(200).json({
             success: true,
             order

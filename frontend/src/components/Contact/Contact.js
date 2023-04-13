@@ -1,6 +1,10 @@
+import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
+import { connect } from "react-redux";
 import styled from "styled-components";
 import bg from "../../assets/bgg.svg";
-
+import { createMessage, clearError } from "../../redux/actions/messageActions"
+import Loading from "../Loading/index"
 const ContactDiv = styled.div`
   padding-bottom: 2rem;
   width: 100%;
@@ -115,7 +119,38 @@ const ContactDiv = styled.div`
   }
 `;
 
-const Contact = () => {
+
+const Contact = ({ createMessage, clearError, success, loading, error }) => {
+  const [message, setMessage] = useState({
+    first_name: "",
+    last_name: "",
+    phone: null,
+    email: "",
+    description: ""
+  });
+  const handleChange = (e) => {
+    setMessage(
+      (prev) => ({ ...prev, [e.target.name]: e.target.value })
+    )
+  }
+  const onSubmit = (e) => {
+    e.preventDefault();
+    createMessage(message);
+
+  }
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      clearError()
+    }
+    if (success) {
+      toast.success("Sent Message Successfully");
+      // history(from, { replace: true });
+    }
+  }, [error, success, toast]);
+  if (loading) {
+    return <><Loading /></>;
+  }
   return (
     <ContactDiv bgImg={bg}>
       <div className="__left_contact">
@@ -137,31 +172,43 @@ const Contact = () => {
           <div>
             <div>
               <span>First Name</span>
-              <input type="text" />
+              <input type="text" name="first_name" onChange={handleChange} />
             </div>
             <div>
               <span>Last Name</span>
-              <input type="text" />
+              <input type="text" name="last_name" onChange={handleChange} />
             </div>
           </div>
           <div>
             <div>
               <span>Phone Number</span>
-              <input type="number" />
+              <input type="number" name="phone" onChange={handleChange} />
             </div>
             <div>
               <span>Email</span>
-              <input type="email" />
+              <input type="email" name="email" onChange={handleChange} />
             </div>
           </div>
           <div>
-            <textarea name="" id="" cols="39" rows="5"></textarea>
+            <textarea name="description" id="" cols="39" rows="5" onChange={handleChange}></textarea>
           </div>
-          <button>Submit</button>
+          <button onClick={onSubmit}>Submit</button>
         </form>
       </div>
     </ContactDiv>
   );
 };
+const mapStateToProps = ({
+  messageState: { loading, message, error, success }
 
-export default Contact;
+}) => ({
+  loading, message, error, success
+});
+
+const mapDispatchToProps = {
+  createMessage, clearError
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+export default connector(Contact);
+

@@ -127,6 +127,7 @@ const Booking = ({ user, createOrder, loading, error, order }) => {
             if (response.data.success) {
               const orderData = {
                 car: data.car_id,
+                car_name:data?.car,
                 from: startDate,
                 to: endDate,
                 status: "paid",
